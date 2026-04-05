@@ -1,39 +1,93 @@
-function sendToRichard() {
-        const cmd = inputField.value.trim();
-        if (!cmd) return;
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVANS LEGAL TERMINAL</title>
+    <style>
+        body { background: #000; color: #0f0; font-family: monospace; padding: 10px; margin: 0; }
+        #out { border: 1px solid #222; height: 300px; overflow-y: scroll; padding: 5px; background: #050505; margin-bottom: 10px; font-size: 14px; }
+        #in-row { display: flex; }
+        input { background: #000; border: 1px solid #0f0; color: #0f0; flex-grow: 1; padding: 10px; font-family: monospace; }
+        button { background: #0f0; color: #000; border: none; padding: 10px; cursor: pointer; font-weight: bold; }
+        .b { color: #fff; } /* Boss */
+        .r { color: #0f0; } /* Richard */
+        .s { color: #444; font-size: 10px; } /* System */
+    </style>
+</head>
+<body onclick="initAudio()">
 
-        const line = document.createElement('div');
-        line.className = "line boss-line";
-        line.innerText = "> " + cmd;
-        consoleDiv.appendChild(line);
-        consoleDiv.scrollTop = consoleDiv.scrollHeight;
+<div id="out">
+    <div class="s">[SYSTEM] READY. KLIKNIJ EKRAN, BY WŁĄCZYĆ GŁOS.</div>
+    <div class="r">Richard: Standing by. State your request, Boss.</div>
+</div>
 
-        // --- SUPER PAPUGA LOGIC ---
-        setTimeout(() => {
-            let resp = "";
-            let text = cmd.toLowerCase();
+<div id="in-row">
+    <input type="text" id="cmd" placeholder="ROZKAZ..." onkeypress="if(event.keyCode==13) run()">
+    <button onclick="run()">SEND</button>
+</div>
 
-            if (text.includes("pranie") || text.includes("mamony")) {
-                resp = "REPORT: Art. 299 KK. Money Laundering. Pranie brudnych pieniędzy. Paragraf 1: od 6 miesięcy do 8 lat. Paragraf 5 i 6 (grupa/znaczna wartość): od 1 do 10 lat. Przepadek mienia w standardzie. My advice: Watch your bank triggers, Boss.";
-            } 
-            else if (text.includes("narkotyk") || text.includes("towar")) {
-                resp = "REPORT: Art. 62 Ustawy o przeciwdziałaniu narkomanii. Posiadanie: do 3 lat. Znaczna ilość: od 1 do 10 lat. Handlowanie (Art. 59): od 2 do 12 lat. Richard's note: Don't get caught with the scales (waga).";
-            }
-            else if (text.includes("pobicie") || text.includes("rozjebanie")) {
-                resp = "REPORT: Art. 158 KK. Udział w bójce lub pobiciu. Paragraf 1: do 3 lat. Jeśli skutek jest ciężki (Paragraf 2): od 6 miesięcy do 8 lat. Jeśli śmierć (Paragraf 3): od 1 do 10 lat. Stay professional, use proxies.";
-            }
-            else if (text.includes("doxy") || text.includes("hacking")) {
-                resp = "REPORT: Art. 267 KK. Bezprawne uzyskanie informacji. Grzywna, ograniczenie wolności lub do 2 lat. Art. 268a (niszczenie danych): do 3 lat. Use TOR, Richard is watching the gateway.";
-            }
-            else if (text.includes("status")) {
-                resp = "Status: Operational. All legal databases from 2026 synced. Encryption 256-bit. Richard B. Evans is ready for the next move.";
-            }
-            else {
-                resp = "Analyzing request... I need more specific keywords (KK Article, Criminal Act). Speak clearly, Boss.";
-            }
+<script>
+    var out = document.getElementById('out');
+    var input = document.getElementById('cmd');
+    var audioReady = false;
 
-            richardResponse(resp);
-        }, 600);
-
-        inputField.value = "";
+    // Odblokowanie audio dla starych i nowych systemów
+    function initAudio() {
+        if(!audioReady) {
+            say("System online");
+            audioReady = true;
+            print("System: Audio enabled.", "s");
+        }
     }
+
+    function say(txt) {
+        if ('speechSynthesis' in window) {
+            var m = new SpeechSynthesisUtterance(txt);
+            m.lang = 'en-US';
+            m.rate = 0.9;
+            window.speechSynthesis.speak(m);
+        }
+    }
+
+    function print(txt, cls) {
+        var d = document.createElement('div');
+        d.className = cls;
+        d.innerHTML = txt;
+        out.appendChild(d);
+        out.scrollTop = out.scrollHeight;
+    }
+
+    function run() {
+        var v = input.value.trim();
+        if(!v) return;
+
+        print("> " + v, "b");
+        
+        var resp = "";
+        var t = v.toLowerCase();
+
+        // LOGIKA SUPER PAPUGI (Art. KK)
+        if(t.indexOf("pranie") > -1 || t.indexOf("mamon") > -1) {
+            resp = "Art. 299 KK. Money Laundering. Penalty: 6 months to 8 years. Group/Large scale: 1 to 10 years. Assets forfeiture included.";
+        } else if(t.indexOf("rozboj") > -1 || t.indexOf("napad") > -1) {
+            resp = "Art. 280 KK. Robbery. Standard: 2-15 years. With weapon: 3-20 years. High risk.";
+        } else if(t.indexOf("oszust") > -1 || t.indexOf("walek") > -1) {
+            resp = "Art. 286 KK. Fraud. Penalty: 6 months to 8 years. Intent is key.";
+        } else if(t.indexOf("towar") > -1 || t.indexOf("narko") > -1) {
+            resp = "Art. 62 Drug Law. Possession: up to 3y. Large amount: 1-10y. Selling: 2-12y.";
+        } else {
+            resp = "Request received. Processing data. Stay responsible.";
+        }
+
+        setTimeout(function() {
+            print("Richard: " + resp, "r");
+            say(resp);
+        }, 500);
+
+        input.value = "";
+    }
+</script>
+
+</body>
+</html>
