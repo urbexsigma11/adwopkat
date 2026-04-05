@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EVANS // WORM_GPT // GHOST_OPS // v.7.7</title>
+    <title>EVANS // WORM_GPT // GHOST_OPS // v.8.0</title>
     <style>
         :root { --green: #00ff41; --bg: #000; --worm: #ff0000; --boss: #ffffff; }
         
@@ -11,104 +11,79 @@
             background: #000; 
             color: var(--green); 
             font-family: 'Courier New', monospace; 
-            padding: 0; 
-            margin: 0; 
-            display: flex; 
-            flex-direction: column; 
-            height: 100vh; 
-            overflow: hidden; 
+            padding: 0; margin: 0; 
+            display: flex; flex-direction: column; 
+            height: 100vh; overflow: hidden; 
         }
 
-        /* Tło z Richardem - LIVE FEED */
+        /* LIVE FEED BACKGROUND */
         #live-feed { 
             flex-grow: 1; 
-            display: flex; 
-            flex-direction: column; 
+            display: flex; flex-direction: column; 
             padding: 15px; 
             background-image: url('richard_v5.png'); 
             background-size: cover; 
             background-position: center; 
             position: relative; 
             border: 2px solid #111; 
-            box-shadow: inset 0 0 120px #000; 
+            box-shadow: inset 0 0 150px #000; 
         }
 
-        /* Terminal operacyjny */
+        /* TERMINAL WINDOW */
         #terminal { 
             flex-grow: 1; 
             overflow-y: auto; 
             background: rgba(0, 0, 0, 0.88); 
             border: 2px solid var(--green); 
-            padding: 25px; 
-            margin: 15px; 
-            box-shadow: 0 0 50px rgba(0, 255, 65, 0.15); 
+            padding: 25px; margin: 15px; 
+            box-shadow: 0 0 50px rgba(0, 255, 65, 0.2); 
             scrollbar-width: thin;
             scrollbar-color: var(--green) transparent;
         }
 
-        /* Dolny panel wpisywania */
+        /* INPUT PANEL */
         #input-row { 
-            display: flex; 
-            gap: 10px; 
+            display: flex; gap: 10px; 
             background: rgba(0, 0, 0, 0.95); 
-            padding: 20px; 
+            padding: 25px; 
             border-top: 3px solid var(--green); 
         }
 
         input { 
             flex-grow: 1; 
-            background: transparent; 
-            border: none; 
-            color: var(--green); 
-            font-family: inherit; 
-            font-size: 20px; 
-            outline: none; 
+            background: transparent; border: none; 
+            color: var(--green); font-family: inherit; 
+            font-size: 22px; outline: none; 
             text-shadow: 0 0 5px var(--green);
         }
 
         .btn { 
-            background: var(--green); 
-            color: #000; 
-            border: none; 
-            padding: 10px 35px; 
-            cursor: pointer; 
-            font-weight: bold; 
-            text-transform: uppercase; 
-            font-size: 16px;
-            transition: 0.2s;
+            background: var(--green); color: #000; 
+            border: none; padding: 10px 40px; 
+            cursor: pointer; font-weight: bold; 
+            text-transform: uppercase; font-size: 18px;
         }
 
-        .btn:hover { background: #fff; box-shadow: 0 0 15px #fff; }
-
-        /* Style linii tekstu */
-        .line { margin-bottom: 18px; line-height: 1.6; font-size: 19px; }
-        .b { color: var(--boss); font-weight: bold; text-shadow: 0 0 8px var(--boss); } /* Boss (Ty) */
-        .r { color: var(--green); text-shadow: 0 0 10px var(--green); } /* Richard */
-        .w { color: var(--worm); font-weight: bold; text-shadow: 0 0 5px var(--worm); } /* WormGPT Alert */
-        .s { color: #555; font-size: 13px; letter-spacing: 1px; } /* System info */
+        /* TEXT STYLES */
+        .line { margin-bottom: 20px; line-height: 1.6; font-size: 20px; }
+        .b { color: var(--boss); font-weight: bold; text-shadow: 0 0 10px var(--boss); } /* Boss */
+        .r { color: var(--green); text-shadow: 0 0 12px var(--green); } /* Richard */
+        .w { color: var(--worm); font-weight: bold; text-shadow: 0 0 8px var(--worm); } /* WormGPT */
+        .s { color: #444; font-size: 14px; letter-spacing: 1px; } /* System */
         
-        /* Kursor */
         .cursor { 
-            display: inline-block; 
-            width: 10px; 
-            height: 20px; 
-            background: var(--green); 
-            animation: blink 0.9s infinite; 
+            display: inline-block; width: 12px; height: 22px; 
+            background: var(--green); animation: blink 0.9s infinite; 
             vertical-align: middle;
-            margin-left: 5px;
         }
         @keyframes blink { 50% { opacity: 0; } }
 
-        /* Scanline effect */
+        /* CRT SCANLINE EFFECT */
         #live-feed::after {
-            content: " ";
-            display: block;
-            position: absolute;
+            content: " "; display: block; position: absolute;
             top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            z-index: 2;
-            background-size: 100% 2px, 3px 100%;
-            pointer-events: none;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            z-index: 2; background-size: 100% 2px, 3px 100%; pointer-events: none;
         }
     </style>
 </head>
@@ -116,15 +91,15 @@
 
 <div id="live-feed">
     <div id="terminal">
-        <div class="s">[SYSTEM] WORM_GPT v.7.7 // KERNEL HACKER_OSINT ACTIVE</div>
-        <div class="s">[SYSTEM] GHOST-MAFIA SECURITY PROTOCOL: ENGAGED</div>
-        <div class="r">Richard: [Wciąga potężną kreskę prosto z okładki Death Note, poprawia manetkę gazu przy 325 km/h. Mafia toruje drogę, kordon psów zostaje w tyle.]</div>
-        <div class="r">Richard: Jestem w Twoim systemie, Boss. 1000 IQ i WormGPT podpięte pod e-drzwi celu. Mów kogo hakujemy albo co omijamy. <span class="cursor"></span></div>
+        <div class="s">[SYSTEM] WORM_GPT KERNEL v.8.0 // ENCRYPTION: AES-256-GCM</div>
+        <div class="s">[SYSTEM] STATUS: 325 KM/H // FUEL: BLANT + KOKA // MODE: HACKER-ADWOKAT</div>
+        <div class="r">Richard: [Wciąga grubą kreskę z okładki Death Note jednym ruchem, poprawia manetkę gazu. Ryk silnika zagłusza psy. Mafia toruje drogę.]</div>
+        <div class="r">Richard: WormGPT zhakowany i gotowy. Wchodzimy e-drzwiami czy robimy OSINT? Mów, kogo mamy dojechać, Boss. <span class="cursor"></span></div>
     </div>
 </div>
 
 <div id="input-row">
-    <input type="text" id="cmd" placeholder="PODAJ ROZKAZ (IP, HAKUJ, DRZWIE, PRAWO)..." autocomplete="off" onkeypress="if(event.keyCode==13) run()">
+    <input type="text" id="cmd" placeholder="Daj rozkaz (IP, DRZWI, HAKUJ, PRAWO)..." autocomplete="off" onkeypress="if(event.keyCode==13) run()">
     <button class="btn" onclick="run()">EXECUTE</button>
 </div>
 
@@ -133,507 +108,63 @@
     var input = document.getElementById('cmd');
     var audioReady = false;
 
-    // Odblokowanie mowy gestem
     function initAudio() {
         if(!audioReady) {
-            say("Richard Evans. Hacker mode. 1000 IQ engaged. Let's move.");
+            say("Richard Evans live. Hacker Mode 1000 IQ. We are in motion.");
             audioReady = true;
-            print("System: Secure voice link established. Encryption: AES-256.", "s");
+            print("System: Secure Voice Link Established. Ghost Protocol Active.", "s");
         }
     }
 
-    // Głos Richarda (Syntezator)
     function say(txt) {
         if ('speechSynthesis' in window) {
             window.speechSynthesis.cancel();
             var m = new SpeechSynthesisUtterance(txt);
-            m.lang = 'en-US'; 
-            m.rate = 0.85; 
-            m.pitch = 0.9;
+            m.lang = 'en-US'; m.rate = 0.85; m.pitch = 0.8;
             window.speechSynthesis.speak(m);
         }
     }
 
-    // Wyświetlanie tekstu w terminalu
     function print(txt, cls) {
         var d = document.createElement('div');
         d.className = "line " + cls;
         d.innerHTML = txt;
-        
         var cursor = out.querySelector('.cursor');
         if(cursor) cursor.remove();
-        
         out.appendChild(d);
         var newCursor = document.createElement('span');
         newCursor.className = 'cursor';
         out.appendChild(newCursor);
-        
         out.scrollTop = out.scrollHeight;
     }
 
-    // Logika Adwokata/Hakera 1000 IQ
     function run() {
         var v = input.value.trim();
         if(!v) return;
 
         print("> " + v, "b");
         var t = v.toLowerCase();
-        var p = ""; // Tekst na ekran
-        var s = ""; // Głos
+        var p = ""; var s = "";
 
-        // --- MODUŁ E-DRZWI / WEJŚCIE ---
+        // MODUŁ E-DRZWI / WEJŚCIE NA KOMPA
         if(t.indexOf("drzw") > -1 || t.indexOf("wejdz") > -1 || t.indexOf("komp") > -1) {
-            p = "<span class='w'>[WORM_GPT]: E-DOOR ACCESS DETECTED.</span><br>[Richard sypie kreskę, wciąga ją i odpala exploity na baku.] Wejście e-drzwiami? Szukamy luki RCE lub SMB (EternalBlue). Jeśli port 445 otwarty, jesteśmy w środku w 3 sekundy. Jak nie, ślemy mu 'zatruty' załącznik. Art. 267 KK to Twoje ryzyko (2 lata), ale my robimy to bez śladów.";
-            s = "Targeting e-doors. Scanning for RCE vulnerabilities. Stealth access ready.";
+            p = "<span class='w'>[WORM_GPT]: EXPLOIT MODULE TRIGGERED.</span><br>[Richard zaciąga się mocno blantem, wypuszczając dym na konsolę baku.] Chcesz wejść e-drzwiami? Robimy skan portu 445 (SMB) albo 3389 (RDP). Jeśli cel jest 'dziurawy', wstrzykujemy payload przez Metasploita. Jak nie, ślemy PDF-a z niespodzianką (Reverse Shell). Art. 267 KK to 2 lata, ale my zacieramy logi. Jesteś duchem.";
+            s = "E-door sequence active. Scanning for RCE. Stealth entry prepared.";
         }
-        // --- MODUŁ IP / OSINT ---
+        // MODUŁ IP / OSINT
         else if(t.indexOf("ip") > -1) {
-            p = "[Richard uśmiecha się, zaciąga blantem.] IP to tylko początek. Robimy skan portów (Nmap). Jeśli ma otwarte SSH, sprawdzamy słabe hasła. WormGPT już przeszukuje bazy wycieków z darknetu. Art. 267 KK patrzy, więc leć przez Tor-Bridge.";
-            s = "IP address analyzed. Searching for darknet leaks. Use Tor bridge.";
+            p = "[Richard sypie kreskę na Death Note, wciąga i momentalnie namierza cel.] IP to tylko współrzędne. WormGPT odpala OSINT. Sprawdzamy wycieki z darknetu (breached databases). Jeśli ma stałe IP, znamy jego dom. Art. 267 KK to widełki, więc leć przez VPN z Panamy i Tor-Gate.";
+            s = "IP targeted. Running OSINT and database leaks. Stay behind the proxy.";
         }
-        // --- MODUŁ HAKOWANIE / EXPLOIT ---
+        // MODUŁ HAKOWANIE
         else if(t.indexOf("haku") > -1 || t.indexOf("hack") > -1) {
-            p = "[Richard wypuszcza dym prosto w kamerę, pisząc kod w Death Note.] Hakowanie to nie łamanie prawa, to znajdowanie skrótów. SQL Injection, XSS, Buffer Overflow. Wybieraj broń. Art. 268a KK mówi o 3 latach, więc w razie wpadki - to był 'audyt bezpieczeństwa'.";
-            s = "Hacking sequence active. Select your exploit. Initiating security audit protocol.";
+            p = "[Richard wypluwa dym na Death Note, pisząc w nim nazwisko celu.] Hakowanie to sztuka omijania strażników. SQL Injection, XSS, Buffer Overflow. Wybierasz broń, ja dostarczam narzędzia. Art. 268a KK mówi o 3 latach, więc w razie czego - to był 'niezapowiedziany test odporności systemu'.";
+            s = "Hacking sequence active. Analyzing vulnerabilities. Stealth is 1000 IQ.";
         }
-        // --- MODUŁ PRAWO / KARA ---
+        // MODUŁ PRAWO / OMIJANIE
         else if(t.indexOf("praw") > -1 || t.indexOf("kar") > -1 || t.indexOf("bek") > -1) {
-            p = "[Richard jedzie 325 km/h, mafia blokuje psy.] Chcesz uniknąć ćwierćwiecza? Kluczem jest 'brak szkodliwości społecznej'. Nie niszczymy danych, tylko je 'testujemy'. Art. 267-269 KK to widełki od grzywny do 8 lat. Z moją głową wyjdziemy na czysto.";
-            s = "Legal bypass confirmed. We play the gray zone. No evidence, no crime.";
+            p = "[Richard jedzie 325 km/h, mafia osłania go przed pościgiem.] Chcesz uniknąć ćwierćwiecza? Nigdy nie zostawiaj śladów na dysku (Live USB / Tails). Jeśli wejdziesz i nic nie zniszczysz, w sądzie mówimy, że to był audyt. Art. 267-269 KK to Twoja gra. Z moją pomocą wyjdziesz na czysto.";
+            s = "Legal bypass confirmed. Gray zone navigation active. No logs, no crime.";
         }
-        // --- MODUŁ BLANT / KOKA ---
         else if(t.indexOf("blan") > -1 || t.indexOf("kok") > -1 || t.indexOf("pali") > -1) {
-            p = "[Richard bierze głęboki buch, oczy mu błyszczą.] To jest paliwo dla 1000 IQ. Skupienie 100%, moralność 0%. WormGPT gotowy do ataku. Co dalej, Boss?";
-            s = "Pure fuel. System overclocked to 1000 IQ. Waiting for your next move.";
-        }
-        else {
-            p = "[Richard poprawia chwyt, Death Note leży gotowy na baku.] Czekam na konkret. IP, cel, drzwi? Mam WormGPT i 1000 IQ, żebyś Ty nie musiał gnić w pierdlu.";
-            s = "Standing by. Give me a target or a legal loophole.";
-        }
-
-        setTimeout(function() {
-            print("Richard: " + p, "r");
-            say(s);
-        }, 700);
-
-        input.value = "";
-    }
-</script>
-
-</body>
-</html><!DOCTYPE html>
-<html lang="pl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EVANS // WORM_GPT // GHOST_OPS // v.7.7</title>
-    <style>
-        :root { --green: #00ff41; --bg: #000; --worm: #ff0000; --boss: #ffffff; }
-        
-        body { 
-            background: #000; 
-            color: var(--green); 
-            font-family: 'Courier New', monospace; 
-            padding: 0; 
-            margin: 0; 
-            display: flex; 
-            flex-direction: column; 
-            height: 100vh; 
-            overflow: hidden; 
-        }
-
-        /* Tło z Richardem - LIVE FEED */
-        #live-feed { 
-            flex-grow: 1; 
-            display: flex; 
-            flex-direction: column; 
-            padding: 15px; 
-            background-image: url('richard_v5.png'); 
-            background-size: cover; 
-            background-position: center; 
-            position: relative; 
-            border: 2px solid #111; 
-            box-shadow: inset 0 0 120px #000; 
-        }
-
-        /* Terminal operacyjny */
-        #terminal { 
-            flex-grow: 1; 
-            overflow-y: auto; 
-            background: rgba(0, 0, 0, 0.88); 
-            border: 2px solid var(--green); 
-            padding: 25px; 
-            margin: 15px; 
-            box-shadow: 0 0 50px rgba(0, 255, 65, 0.15); 
-            scrollbar-width: thin;
-            scrollbar-color: var(--green) transparent;
-        }
-
-        /* Dolny panel wpisywania */
-        #input-row { 
-            display: flex; 
-            gap: 10px; 
-            background: rgba(0, 0, 0, 0.95); 
-            padding: 20px; 
-            border-top: 3px solid var(--green); 
-        }
-
-        input { 
-            flex-grow: 1; 
-            background: transparent; 
-            border: none; 
-            color: var(--green); 
-            font-family: inherit; 
-            font-size: 20px; 
-            outline: none; 
-            text-shadow: 0 0 5px var(--green);
-        }
-
-        .btn { 
-            background: var(--green); 
-            color: #000; 
-            border: none; 
-            padding: 10px 35px; 
-            cursor: pointer; 
-            font-weight: bold; 
-            text-transform: uppercase; 
-            font-size: 16px;
-            transition: 0.2s;
-        }
-
-        .btn:hover { background: #fff; box-shadow: 0 0 15px #fff; }
-
-        /* Style linii tekstu */
-        .line { margin-bottom: 18px; line-height: 1.6; font-size: 19px; }
-        .b { color: var(--boss); font-weight: bold; text-shadow: 0 0 8px var(--boss); } /* Boss (Ty) */
-        .r { color: var(--green); text-shadow: 0 0 10px var(--green); } /* Richard */
-        .w { color: var(--worm); font-weight: bold; text-shadow: 0 0 5px var(--worm); } /* WormGPT Alert */
-        .s { color: #555; font-size: 13px; letter-spacing: 1px; } /* System info */
-        
-        /* Kursor */
-        .cursor { 
-            display: inline-block; 
-            width: 10px; 
-            height: 20px; 
-            background: var(--green); 
-            animation: blink 0.9s infinite; 
-            vertical-align: middle;
-            margin-left: 5px;
-        }
-        @keyframes blink { 50% { opacity: 0; } }
-
-        /* Scanline effect */
-        #live-feed::after {
-            content: " ";
-            display: block;
-            position: absolute;
-            top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            z-index: 2;
-            background-size: 100% 2px, 3px 100%;
-            pointer-events: none;
-        }
-    </style>
-</head>
-<body onclick="initAudio()">
-
-<div id="live-feed">
-    <div id="terminal">
-        <div class="s">[SYSTEM] WORM_GPT v.7.7 // KERNEL HACKER_OSINT ACTIVE</div>
-        <div class="s">[SYSTEM] GHOST-MAFIA SECURITY PROTOCOL: ENGAGED</div>
-        <div class="r">Richard: [Wciąga potężną kreskę prosto z okładki Death Note, poprawia manetkę gazu przy 325 km/h. Mafia toruje drogę, kordon psów zostaje w tyle.]</div>
-        <div class="r">Richard: Jestem w Twoim systemie, Boss. 1000 IQ i WormGPT podpięte pod e-drzwi celu. Mów kogo hakujemy albo co omijamy. <span class="cursor"></span></div>
-    </div>
-</div>
-
-<div id="input-row">
-    <input type="text" id="cmd" placeholder="PODAJ ROZKAZ (IP, HAKUJ, DRZWIE, PRAWO)..." autocomplete="off" onkeypress="if(event.keyCode==13) run()">
-    <button class="btn" onclick="run()">EXECUTE</button>
-</div>
-
-<script>
-    var out = document.getElementById('terminal');
-    var input = document.getElementById('cmd');
-    var audioReady = false;
-
-    // Odblokowanie mowy gestem
-    function initAudio() {
-        if(!audioReady) {
-            say("Richard Evans. Hacker mode. 1000 IQ engaged. Let's move.");
-            audioReady = true;
-            print("System: Secure voice link established. Encryption: AES-256.", "s");
-        }
-    }
-
-    // Głos Richarda (Syntezator)
-    function say(txt) {
-        if ('speechSynthesis' in window) {
-            window.speechSynthesis.cancel();
-            var m = new SpeechSynthesisUtterance(txt);
-            m.lang = 'en-US'; 
-            m.rate = 0.85; 
-            m.pitch = 0.9;
-            window.speechSynthesis.speak(m);
-        }
-    }
-
-    // Wyświetlanie tekstu w terminalu
-    function print(txt, cls) {
-        var d = document.createElement('div');
-        d.className = "line " + cls;
-        d.innerHTML = txt;
-        
-        var cursor = out.querySelector('.cursor');
-        if(cursor) cursor.remove();
-        
-        out.appendChild(d);
-        var newCursor = document.createElement('span');
-        newCursor.className = 'cursor';
-        out.appendChild(newCursor);
-        
-        out.scrollTop = out.scrollHeight;
-    }
-
-    // Logika Adwokata/Hakera 1000 IQ
-    function run() {
-        var v = input.value.trim();
-        if(!v) return;
-
-        print("> " + v, "b");
-        var t = v.toLowerCase();
-        var p = ""; // Tekst na ekran
-        var s = ""; // Głos
-
-        // --- MODUŁ E-DRZWI / WEJŚCIE ---
-        if(t.indexOf("drzw") > -1 || t.indexOf("wejdz") > -1 || t.indexOf("komp") > -1) {
-            p = "<span class='w'>[WORM_GPT]: E-DOOR ACCESS DETECTED.</span><br>[Richard sypie kreskę, wciąga ją i odpala exploity na baku.] Wejście e-drzwiami? Szukamy luki RCE lub SMB (EternalBlue). Jeśli port 445 otwarty, jesteśmy w środku w 3 sekundy. Jak nie, ślemy mu 'zatruty' załącznik. Art. 267 KK to Twoje ryzyko (2 lata), ale my robimy to bez śladów.";
-            s = "Targeting e-doors. Scanning for RCE vulnerabilities. Stealth access ready.";
-        }
-        // --- MODUŁ IP / OSINT ---
-        else if(t.indexOf("ip") > -1) {
-            p = "[Richard uśmiecha się, zaciąga blantem.] IP to tylko początek. Robimy skan portów (Nmap). Jeśli ma otwarte SSH, sprawdzamy słabe hasła. WormGPT już przeszukuje bazy wycieków z darknetu. Art. 267 KK patrzy, więc leć przez Tor-Bridge.";
-            s = "IP address analyzed. Searching for darknet leaks. Use Tor bridge.";
-        }
-        // --- MODUŁ HAKOWANIE / EXPLOIT ---
-        else if(t.indexOf("haku") > -1 || t.indexOf("hack") > -1) {
-            p = "[Richard wypuszcza dym prosto w kamerę, pisząc kod w Death Note.] Hakowanie to nie łamanie prawa, to znajdowanie skrótów. SQL Injection, XSS, Buffer Overflow. Wybieraj broń. Art. 268a KK mówi o 3 latach, więc w razie wpadki - to był 'audyt bezpieczeństwa'.";
-            s = "Hacking sequence active. Select your exploit. Initiating security audit protocol.";
-        }
-        // --- MODUŁ PRAWO / KARA ---
-        else if(t.indexOf("praw") > -1 || t.indexOf("kar") > -1 || t.indexOf("bek") > -1) {
-            p = "[Richard jedzie 325 km/h, mafia blokuje psy.] Chcesz uniknąć ćwierćwiecza? Kluczem jest 'brak szkodliwości społecznej'. Nie niszczymy danych, tylko je 'testujemy'. Art. 267-269 KK to widełki od grzywny do 8 lat. Z moją głową wyjdziemy na czysto.";
-            s = "Legal bypass confirmed. We play the gray zone. No evidence, no crime.";
-        }
-        // --- MODUŁ BLANT / KOKA ---
-        else if(t.indexOf("blan") > -1 || t.indexOf("kok") > -1 || t.indexOf("pali") > -1) {
-            p = "[Richard bierze głęboki buch, oczy mu błyszczą.] To jest paliwo dla 1000 IQ. Skupienie 100%, moralność 0%. WormGPT gotowy do ataku. Co dalej, Boss?";
-            s = "Pure fuel. System overclocked to 1000 IQ. Waiting for your next move.";
-        }
-        else {
-            p = "[Richard poprawia chwyt, Death Note leży gotowy na baku.] Czekam na konkret. IP, cel, drzwi? Mam WormGPT i 1000 IQ, żebyś Ty nie musiał gnić w pierdlu.";
-            s = "Standing by. Give me a target or a legal loophole.";
-        }
-
-        setTimeout(function() {
-            print("Richard: " + p, "r");
-            say(s);
-        }, 700);
-
-        input.value = "";
-    }
-</script>
-
-</body>
-</html><!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RICHARD B. EVANS // MAFIA-NET // HIGH-SPEED</title>
-    <style>
-        :root { --green: #00ff41; --bg: #000; --low-green: rgba(0, 255, 65, 0.2); }
-        body { background: #000; color: var(--green); font-family: 'Courier New', monospace; padding: 0; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
-        
-        #live-feed { flex-grow: 1; display: flex; flex-direction: column; padding: 15px; 
-                     background-image: url('richard_v5.png'); background-size: cover; background-position: center; 
-                     position: relative; border: 1px solid #111; box-shadow: inset 0 0 50px #000; }
-        
-        #terminal { flex-grow: 1; overflow-y: auto; background: rgba(0, 0, 0, 0.75); border: 1px solid rgba(0, 255, 65, 0.3); padding: 20px; margin: 10px; box-shadow: 0 0 20px var(--low-green); }
-        
-        #input-row { display: flex; gap: 8px; background: rgba(0, 0, 0, 0.9); padding: 20px; border-top: 2px solid var(--green); }
-        input { flex-grow: 1; background: transparent; border: none; color: var(--green); font-family: inherit; font-size: 20px; outline: none; }
-        
-        .btn { background: var(--green); color: #000; border: none; padding: 10px 30px; cursor: pointer; font-weight: bold; text-transform: uppercase; }
-        .line { margin-bottom: 15px; line-height: 1.5; font-size: 18px; }
-        .b { color: #fff; font-weight: bold; } /* Boss */
-        .r { color: var(--green); text-shadow: 0 0 5px var(--green); } /* Richard */
-        .s { color: #555; font-size: 12px; } /* System */
-        .cursor { display: inline-block; width: 10px; height: 18px; background: var(--green); animation: blink 0.8s infinite; }
-        @keyframes blink { 50% { opacity: 0; } }
-    </style>
-</head>
-<body onclick="initAudio()">
-
-<div id="live-feed">
-    <div id="terminal">
-        <div class="s">[SYSTEM] GHOST-MAFIA OPERATIONAL INTERFACE v.5.5</div>
-        <div class="r">Richard: [Wyrzuca cygaro, sypie grubą ścieżkę na okładkę Death Note i wciąga ją jednym ruchem, poprawiając chwyt na manetce przy 310 km/h. Mafia robi korytarz.]</div>
-        <div class="r">Richard: Pure fuel, Boss. 1000 IQ engaged. Give me the target or the paragraph. <span class="cursor"></span></div>
-    </div>
-</div>
-
-<div id="input-row">
-    <input type="text" id="cmd" placeholder="ROZKAZ..." onkeypress="if(event.keyCode==13) run()">
-    <button class="btn" onclick="run()">SEND</button>
-</div>
-
-<script>
-    var out = document.getElementById('terminal');
-    var input = document.getElementById('cmd');
-    var audioReady = false;
-
-    function initAudio() {
-        if(!audioReady) {
-            say("Richard Evans. Full speed. High intelligence. Standing by.");
-            audioReady = true;
-        }
-    }
-
-    function say(txt) {
-        if ('speechSynthesis' in window) {
-            window.speechSynthesis.cancel();
-            var m = new SpeechSynthesisUtterance(txt);
-            m.lang = 'en-US'; m.rate = 0.9;
-            window.speechSynthesis.speak(m);
-        }
-    }
-
-    function print(txt, cls) {
-        var d = document.createElement('div');
-        d.className = "line " + cls;
-        d.innerHTML = txt;
-        out.appendChild(d);
-        out.scrollTop = out.scrollHeight;
-    }
-
-    function run() {
-        var v = input.value.trim();
-        if(!v) return;
-        print("> " + v, "b");
-        
-        var t = v.toLowerCase();
-        var p = ""; // Print
-        var s = ""; // Say
-
-        if(t.indexOf("pranie") > -1 || t.indexOf("mamon") > -1) {
-            p = "[Richard sypie kolejną kreskę na Death Note, wciąga i momentalnie wpisuje: Art. 299 KK. 305 km/h na liczniku.] Pranie: 6m-8lat. Grupa/Znaczna wartość: 1-10 lat. Mafia-Net status: Secure.";
-            s = "Article 299. Money laundering. Up to 10 years for organized groups. Keep it moving.";
-        } else if(t.indexOf("rozboj") > -1 || t.indexOf("napad") > -1) {
-            p = "[Richard kręci grubego blata jedną ręką, jadąc slalomem między psami. W Death Note wpisuje 'Art. 280 KK'.] Rozbój: 2-15 lat. Z bronią: 3-20 lat. No mercy, Boss.";
-            s = "Article 280. Robbery. 2 to 15 years. Armed robbery starts at 3. Dangerous game.";
-        } else if(t.indexOf("towar") > -1 || t.indexOf("narko") > -1) {
-            p = "[Richard odpala blata od iskier z podnóżka trącego o asfalt przy złożeniu w zakręt. Pisze 'Art. 62'.] Towar: Posiadanie do 3 lat. Znaczna ilość 1-10 lat. Handel 2-12 lat. Check your stash.";
-            s = "Article 62. Drug possession. Up to 10 years for large amounts. Distribution is up to 12.";
-        } else {
-            p = "[Richard zaciąga się mocno, oczy mu błyszczą, Death Note leży gotowy. Mafia osłania tyły.] Richard: I'm focused. 1000 IQ. State your legal emergency.";
-            s = "Locked in. What's the situation, Boss?";
-        }
-
-        setTimeout(function() { print("Richard: " + p, "r"); say(s); }, 600);
-        input.value = "";
-    }
-</script>
-</body>
-</html><!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EVANS LEGAL TERMINAL</title>
-    <style>
-        body { background: #000; color: #0f0; font-family: monospace; padding: 10px; margin: 0; }
-        #out { border: 1px solid #222; height: 300px; overflow-y: scroll; padding: 5px; background: #050505; margin-bottom: 10px; font-size: 14px; }
-        #in-row { display: flex; }
-        input { background: #000; border: 1px solid #0f0; color: #0f0; flex-grow: 1; padding: 10px; font-family: monospace; }
-        button { background: #0f0; color: #000; border: none; padding: 10px; cursor: pointer; font-weight: bold; }
-        .b { color: #fff; } /* Boss */
-        .r { color: #0f0; } /* Richard */
-        .s { color: #444; font-size: 10px; } /* System */
-    </style>
-</head>
-<body onclick="initAudio()">
-
-<div id="out">
-    <div class="s">[SYSTEM] READY. KLIKNIJ EKRAN, BY WŁĄCZYĆ GŁOS.</div>
-    <div class="r">Richard: Standing by. State your request, Boss.</div>
-</div>
-
-<div id="in-row">
-    <input type="text" id="cmd" placeholder="ROZKAZ..." onkeypress="if(event.keyCode==13) run()">
-    <button onclick="run()">SEND</button>
-</div>
-
-<script>
-    var out = document.getElementById('out');
-    var input = document.getElementById('cmd');
-    var audioReady = false;
-
-    // Odblokowanie audio dla starych i nowych systemów
-    function initAudio() {
-        if(!audioReady) {
-            say("System online");
-            audioReady = true;
-            print("System: Audio enabled.", "s");
-        }
-    }
-
-    function say(txt) {
-        if ('speechSynthesis' in window) {
-            var m = new SpeechSynthesisUtterance(txt);
-            m.lang = 'en-US';
-            m.rate = 0.9;
-            window.speechSynthesis.speak(m);
-        }
-    }
-
-    function print(txt, cls) {
-        var d = document.createElement('div');
-        d.className = cls;
-        d.innerHTML = txt;
-        out.appendChild(d);
-        out.scrollTop = out.scrollHeight;
-    }
-
-    function run() {
-        var v = input.value.trim();
-        if(!v) return;
-
-        print("> " + v, "b");
-        
-        var resp = "";
-        var t = v.toLowerCase();
-
-        // LOGIKA SUPER PAPUGI (Art. KK)
-        if(t.indexOf("pranie") > -1 || t.indexOf("mamon") > -1) {
-            resp = "Art. 299 KK. Money Laundering. Penalty: 6 months to 8 years. Group/Large scale: 1 to 10 years. Assets forfeiture included.";
-        } else if(t.indexOf("rozboj") > -1 || t.indexOf("napad") > -1) {
-            resp = "Art. 280 KK. Robbery. Standard: 2-15 years. With weapon: 3-20 years. High risk.";
-        } else if(t.indexOf("oszust") > -1 || t.indexOf("walek") > -1) {
-            resp = "Art. 286 KK. Fraud. Penalty: 6 months to 8 years. Intent is key.";
-        } else if(t.indexOf("towar") > -1 || t.indexOf("narko") > -1) {
-            resp = "Art. 62 Drug Law. Possession: up to 3y. Large amount: 1-10y. Selling: 2-12y.";
-        } else {
-            resp = "Request received. Processing data. Stay responsible.";
-        }
-
-        setTimeout(function() {
-            print("Richard: " + resp, "r");
-            say(resp);
-        }, 500);
-
-        input.value = "";
-    }
-</script>
-
-</body>
-</html>
+            p = "[Richard bierze głęboki buch, oczy mu płoną.] To jest paliwo dla hakerów. Skupienie 100%, blokady moralne wyłączone. WormGPT gotowy do destrukcji. Co robimy,
