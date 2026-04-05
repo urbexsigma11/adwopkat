@@ -167,4 +167,18 @@
             s = "Legal bypass confirmed. Gray zone navigation active. No logs, no crime.";
         }
         else if(t.indexOf("blan") > -1 || t.indexOf("kok") > -1 || t.indexOf("pali") > -1) {
-            p = "[Richard bierze głęboki buch, oczy mu płoną.] To jest paliwo dla hakerów. Skupienie 100%, blokady moralne wyłączone. WormGPT gotowy do destrukcji. Co robimy,
+            p = "[Richard bierze głęboki buch, oczy mu płoną.] To jest paliwo dla hakerów. Skupienie 100%, blokady moralne wyłączone. WormGPT gotowy do destrukcji. Co robimy, Szefie?";
+            s = "Pure fuel. IQ overclocked. Waiting for target.";
+        }
+        else {
+            p = "[Richard poprawia chwyt na kierownicy, 325 km/h na liczniku.] Czekam na konkretny rozkaz. IP, drzwi, czy paragraf do ominięcia? Mam 1000 IQ, żebyś Ty nie musiał tracić lat w pierdlu.";
+            s = "I am ready. Give me the target or the loophole.";
+        }
+
+        setTimeout(function() { print("Richard: " + p, "r"); say(s); }, 600);
+        input.value = "";
+    }
+</script>
+
+</body>
+</html>
