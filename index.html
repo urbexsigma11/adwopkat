@@ -2,108 +2,134 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>RICHARD B. EVANS // OPERATIONAL TERMINAL</title>
+    <title>RICHARD B. EVANS // PURE TERMINAL</title>
     <style>
-        :root { --green: #00ff41; --bg: #050505; }
-        body { background: var(--bg); color: var(--green); font-family: 'Courier New', monospace; margin: 0; display: flex; height: 100vh; }
+        :root { --green: #00ff41; --bg: #000; --low-green: rgba(0, 255, 65, 0.2); }
+        body { background: var(--bg); color: var(--green); font-family: 'Courier New', monospace; margin: 0; padding: 20px; display: flex; flex-direction: column; height: 100vh; box-sizing: border-box; }
         
-        /* LEWA STRONA: TERMINAL */
-        #left-panel { width: 60%; display: flex; flex-direction: column; border-right: 1px solid #222; padding: 20px; box-sizing: border-box; }
-        #output { flex-grow: 1; overflow-y: auto; background: #000; border: 1px solid #111; padding: 15px; font-size: 14px; margin-bottom: 10px; }
+        #header { font-size: 11px; border-bottom: 1px solid #222; padding-bottom: 10px; margin-bottom: 20px; display: flex; justify-content: space-between; letter-spacing: 1px; }
+        #console { flex-grow: 1; overflow-y: auto; border: 1px solid #111; padding: 20px; background: #020202; margin-bottom: 20px; box-shadow: inset 0 0 20px var(--low-green); }
         
-        /* PRAWA STRONA: GLOBFONE */
-        #right-panel { width: 40%; background: #111; display: flex; flex-direction: column; }
-        iframe { width: 100%; height: 100%; border: none; }
+        .input-box { display: flex; gap: 10px; background: #0a0a0a; padding: 15px; border: 1px solid var(--green); }
+        input { flex-grow: 1; background: transparent; border: none; color: var(--green); font-family: inherit; font-size: 18px; outline: none; }
+        
+        .btn { background: var(--green); color: #000; border: none; padding: 10px 25px; cursor: pointer; font-weight: bold; text-transform: uppercase; font-family: inherit; }
+        .btn:hover { background: #fff; }
+        .btn-mic { background: #ff0000; color: #fff; }
 
-        input { background: #000; border: 1px solid var(--green); color: var(--green); padding: 15px; width: calc(100% - 130px); font-family: inherit; }
-        .controls { display: flex; gap: 5px; }
-        .btn { background: var(--green); color: #000; border: none; padding: 15px; cursor: pointer; font-weight: bold; }
-        .msg-richard { color: var(--green); margin-bottom: 5px; }
-        .msg-boss { color: #fff; margin-bottom: 5px; border-left: 2px solid var(--green); padding-left: 5px; }
+        .line { margin-bottom: 12px; line-height: 1.5; }
+        .boss-line { color: #fff; }
+        .richard-line { color: var(--green); text-shadow: 0 0 5px var(--green); }
+        .sys-line { color: #444; font-size: 12px; font-style: italic; }
+        
+        /* Animacja pisania */
+        .typing::after { content: "_"; animation: blink 0.7s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
     </style>
 </head>
 <body>
 
-<div id="left-panel">
-    <div style="font-size: 10px; margin-bottom: 10px;">ID: RICHARD_B_EVANS | SECURE_LINE: ACTIVE | NC_GATEWAY_28263</div>
-    <div id="output">
-        <div class="msg-richard">STACJA GOTOWA. KLIKNIJ 'INICJUJ', ABY OBUDZIĆ PAPUGĘ.</div>
-    </div>
-    
-    <div class="controls">
-        <input type="text" id="cmd" placeholder="Polecenie tekstowe..." onkeypress="if(event.key==='Enter') sendCmd()">
-        <button class="btn" onclick="startVoice()">🎙️ GŁOS</button>
-        <button class="btn" onclick="initRichard()">INICJUJ</button>
-    </div>
+<div id="header">
+    <span>SYSTEM: RICHARD_B_EVANS // 2083 KOOTER LN, NC</span>
+    <span>ENCRYPTED_SESSION: ACTIVE</span>
 </div>
 
-<div id="right-panel">
-    <div style="padding: 10px; font-size: 12px; background: #222; color: #fff; text-align: center;">GLOBFONE GATEWAY (CALL CENTER)</div>
-    <iframe src="https://globfone.com/call-phone/"></iframe>
+<div id="console">
+    <div class="line sys-line">[SYS] Czekam na inicjalizację głosu... Kliknij przycisk po prawej.</div>
+</div>
+
+<div class="input-box">
+    <input type="text" id="cmdInput" placeholder="WPISZ ROZKAZ LUB UŻYJ MIC..." autocomplete="off">
+    <button class="btn btn-mic" onclick="runMic()" id="micBtn">🎙️ MIC</button>
+    <button class="btn" onclick="sendToRichard()">WYŚLIJ</button>
+    <button class="btn" style="background: #333; color: #00ff41;" onclick="startSystem()">INICJUJ</button>
 </div>
 
 <script>
-    const output = document.getElementById('output');
-    const input = document.getElementById('cmd');
+    const consoleDiv = document.getElementById('console');
+    const inputField = document.getElementById('cmdInput');
+    const micBtn = document.getElementById('micBtn');
 
-    // INICJALIZACJA (Wymagana przez Chrome/Firefox)
-    function initRichard() {
-        richardSpeak("Richard B. Evans operational. System initialized, Boss.");
-        printMsg("Richard: System zainicjalizowany. Czekam na wytyczne.", "msg-richard");
+    // 1. RICHARD MÓWI I PISZE
+    function richardResponse(text) {
+        // Tekst na ekranie
+        const line = document.createElement('div');
+        line.className = "line richard-line typing";
+        line.innerText = "Richard: ";
+        consoleDiv.appendChild(line);
+        
+        let i = 0;
+        function typeWriter() {
+            if (i < text.length) {
+                line.innerText += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, 30);
+                consoleDiv.scrollTop = consoleDiv.scrollHeight;
+            } else {
+                line.classList.remove('typing');
+            }
+        }
+        typeWriter();
+
+        // Głos (TTS)
+        if (window.speechSynthesis) {
+            window.speechSynthesis.cancel();
+            const msg = new SpeechSynthesisUtterance(text);
+            msg.lang = 'en-US'; // Richard mówi z akcentem USA
+            msg.rate = 0.9;
+            window.speechSynthesis.speak(msg);
+        }
     }
 
-    // GŁOS RICHARDA
-    function richardSpeak(text) {
-        if (!window.speechSynthesis) return;
-        window.speechSynthesis.cancel(); // Przerwij jeśli już mówi
-        const msg = new SpeechSynthesisUtterance(text);
-        msg.lang = 'en-US'; 
-        msg.rate = 0.85;
-        window.speechSynthesis.speak(msg);
-    }
+    // 2. TWOJA KOMENDA (Tekst)
+    function sendToRichard() {
+        const cmd = inputField.value.trim();
+        if (!cmd) return;
 
-    // TWOJE KOMENDY
-    function sendCmd() {
-        const val = input.value.trim();
-        if(!val) return;
+        const line = document.createElement('div');
+        line.className = "line boss-line";
+        line.innerText = "> " + cmd;
+        consoleDiv.appendChild(line);
+        consoleDiv.scrollTop = consoleDiv.scrollHeight;
 
-        printMsg("BOSS: " + val, "msg-boss");
-
-        // PROSTA LOGIKA PAPUGI
-        let resp = "I'm on it. Analyzing legal databases.";
-        if(val.toLowerCase().includes("sprawdź")) resp = "Searching records for the target. NC database linked.";
-        if(val.toLowerCase().includes("globfone")) resp = "Opening call gateway on the right panel.";
-
+        // Reakcje Papugi
         setTimeout(() => {
-            printMsg("Richard: " + resp, "msg-richard");
-            richardSpeak(resp);
+            if (cmd.toLowerCase().includes("sprawdź")) {
+                richardResponse("Accessing legal mainframe. Cross-referencing DOX files and local warrants for you, Boss.");
+            } else if (cmd.toLowerCase().includes("kto to")) {
+                richardResponse("Checking target identity. Analyzing database. Please wait for the scan result.");
+            } else {
+                richardResponse("Message received. I'm processing the data. Stay low.");
+            }
         }, 600);
 
-        input.value = "";
+        inputField.value = "";
     }
 
-    function printMsg(txt, cls) {
-        const d = document.createElement('div');
-        d.className = cls;
-        d.innerText = txt;
-        output.appendChild(d);
-        output.scrollTop = output.scrollHeight;
-    }
-
-    // ROZPOZNAWANIE GŁOSU
-    function startVoice() {
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        if (!SpeechRecognition) return alert("Twoja przeglądarka nie wspiera mikrofonu!");
+    // 3. TWOJA KOMENDA (Głos)
+    function runMic() {
+        const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRec) return alert("Brak wsparcia MIC w tej przeglądarce.");
         
-        const recognition = new SpeechRecognition();
-        recognition.lang = 'pl-PL';
-        recognition.start();
+        const rec = new SpeechRec();
+        rec.lang = 'pl-PL'; // Ty po polsku
+        rec.start();
+        micBtn.style.background = "#00ff41";
 
-        recognition.onresult = (e) => {
-            input.value = e.results[0][0].transcript;
-            sendCmd();
+        rec.onresult = (e) => {
+            inputField.value = e.results[0][0].transcript;
+            sendToRichard();
         };
+
+        rec.onend = () => { micBtn.style.background = "#ff0000"; };
     }
+
+    function startSystem() {
+        richardResponse("Richard B. Evans online. Operational terminal secured. Awaiting your orders, Boss.");
+    }
+
+    inputField.addEventListener("keypress", (e) => { if(e.key === "Enter") sendToRichard(); });
 </script>
+
 </body>
 </html>
