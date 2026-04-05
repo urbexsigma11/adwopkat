@@ -3,6 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EVANS // WORM_GPT // GHOST_OPS // v.8.1 FIXED</title>
+    <style>
+        :root { --green: #00ff41; --bg: #000; --worm: #ff0000; --boss: #ffffff; }
+        body { 
+            background: #000; color: var(--green); font-family: 'Courier New', monospace; 
+            padding: 0; margin: 0; display: flex; flex-direction: column; 
+            height: 100vh; overflow: hidden; 
+        }
+        #live-feed { 
+            flex-grow: 1; display: flex; flex-direction: column; padding: 15px; 
+            background-image: url('richard_v5.png'); background-size: cover; background-position: center; 
+            position: relative; border: 2px solid #111; box-shadow: inset 0 0 150px #000; 
+        }
+        #terminal { 
+            flex-grow: 1; overflow-y: auto; background: rgba(0, 0, 0, 0.9); 
+            border: 2px solid var(--green); padding: 25px; margin: 10px; 
+            box-shadow: 0 0 50px rgba(0, 255, 65, 0.2); 
+        }
+        #input-row { 
+            display: flex; gap: 10px; background: rgba(0, 0, 0, 0.95); 
+            padding: 20px; border-top: 3px solid var(--green); 
+        }
+        input { 
+            flex-grow: 1; background: transparent; border: none; 
+            color: var(--green); font-family: inherit; font-size: 20px; outline: none; 
+        }
+        .btn { 
+            background: var(--green); color: #000; border: none; padding: 10px 30px; 
+            cursor: pointer; font-weight: bold; text-transform: uppercase; 
+        }
+        .line { margin-bottom: 15px; line-height: 1.5; font-size: 18px; }
+        .b { color: var(--boss); font-weight: bold; } 
+        .r { color: var(--green); text-shadow: 0 0 8px var(--green); } 
+        .w { color: var(--worm); font-weight: bold; } 
+        .s { color: #444; font-size: 12px; }
+        .cursor { display: inline-block; width: 10px; height: 18px; background: var(--green); animation: blink 0.9s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+    </style>
+</head>
+<body onclick="handleUserInteraction()">
+
+<div id="live-feed">
+    <div id="terminal" id="term_out">
+        <div class="s">[SYSTEM] BOOTING WORM_GPT KERNEL...</div>
+        <div class="s">[SYSTEM] 325 KM/H // STATUS: BLANT+KOKA ACTIVE</div>
+        <div class="r">Richard: [Wciąga kreskę z Death Note, silnik ryczy przy 325 km/h. Mafia osłania tyły.]</div>
+        <div class="r">Richard: Wszystko naprawione. Jestem gotowy do skoku. Podaj cel, Boss. <span class="cursor"></span></div>
+    </div>
+</div>
+
+<div id="input-row">
+    <input type="text" id="cmd" placeholder="ROZKAZ (IP, DRZWI, HAKUJ)..." autocomplete="off">
+    <button class="btn" onclick="executeCommand()">EXECUTE</button>
+</div>
+
+<script>
+    // Inicjalizacja zmiennych
+    const terminal = document.getElementById('terminal');
+    const input = document.getElementById('cmd');
+    let audioContextStarted = false;
+
+    // Funkcja wywoływana przy kliknięciu w dowolne miejsce strony
+    function handleUserInteraction() {
+        if (!audioContextStarted) {
+            startAudio();
+            audioContextStarted = true;
+        }
+    }
+
+    // Obsługa Entera
+    input.addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            executeCommand();
+        }
+    });
+
+    function startAudio() {
+        // Wymuszenie startu syntezatora
+        say("Richard Evans. Online. System fixed. Let's move.");
+        print("System: Audio Link Restored.", "s");
+    }
+
+    function say(txt) {
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const msg = new SpeechSynthesisUtterance(txt);
+            msg.lang = 'en-US';
+            msg.rate = 0.85;
+            window.speechSynthesis.speak(msg);
+        }
+    }
+
+    function print(txt, cls) {
+        const d = document.createElement('div');
+        d.className = "line " + cls;
+        d.innerHTML = txt;
+        
+        const cursor = terminal.querySelector('.cursor');
+        if (cursor) cursor.remove();
+        
+        terminal.appendChild(d);
+        const newCursor = document.createElement('span');
+        newCursor.className = 'cursor';
+        terminal.appendChild(newCursor);
+        
+        terminal.scrollTop = terminal.scrollHeight;
+    }
+
+    function executeCommand() {
+        const v = input.value.trim();
+        if (!v) return;
+
+        print("> " + v, "b");
+        const t = v.toLowerCase();
+        let p = "";
+        let s = "";
+
+        if (t.indexOf("drzw") > -1 || t.indexOf("wejdz") > -1) {
+            p = "<span class='w'>[WORM_GPT]: EXPLOIT READY.</span><br>[Richard zaciąga się blantem.] E-drzwi? Skanuję SMB/RDP. Payload Metasploit przygotowany. Wejdziemy cicho, wyjdziemy bez logów. Art. 267 KK nas nie dotyczy, bo jesteśmy duchami.";
+            s = "Scanning e-doors. Exploit ready.";
+        } else if (t.indexOf("ip") > -1) {
+            p = "[Richard sypie kreskę na Death Note.] IP namierzone. WormGPT sprawdza bazy darknetowe. VPN z Panamy aktywny. Cel na widelcu.";
+            s = "IP targeted. Database leak scan initiated.";
+        } else if (t.indexOf("haku") > -1) {
+            p = "[Richard wypuszcza dym na konsolę.] Atak SQL Injection w toku. Szukamy luk w kodzie. 1000 IQ w akcji.";
+            s = "Initiating SQL injection. System breach in progress.";
+        } else {
+            p = "[Richard poprawia manetkę.] Czekam na konkretny ruch. IP, drzwi, czy hakowanie? Mafia czeka na sygnał.";
+            s = "Waiting for your order, Boss.";
+        }
+
+        setTimeout(() => {
+            print("Richard: " + p, "r");
+            say(s);
+        }, 600);
+
+        input.value = "";
+    }
+</script>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EVANS // WORM_GPT // GHOST_OPS // v.8.0</title>
     <style>
         :root { --green: #00ff41; --bg: #000; --worm: #ff0000; --boss: #ffffff; }
