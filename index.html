@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>RICHARD B. EVANS // OPERATIONAL TERMINAL</title>
+    <style>
+        :root { --green: #00ff41; --bg: #050505; }
+        body { background: var(--bg); color: var(--green); font-family: 'Courier New', monospace; margin: 0; display: flex; height: 100vh; }
+        
+        /* LEWA STRONA: TERMINAL */
+        #left-panel { width: 60%; display: flex; flex-direction: column; border-right: 1px solid #222; padding: 20px; box-sizing: border-box; }
+        #output { flex-grow: 1; overflow-y: auto; background: #000; border: 1px solid #111; padding: 15px; font-size: 14px; margin-bottom: 10px; }
+        
+        /* PRAWA STRONA: GLOBFONE */
+        #right-panel { width: 40%; background: #111; display: flex; flex-direction: column; }
+        iframe { width: 100%; height: 100%; border: none; }
+
+        input { background: #000; border: 1px solid var(--green); color: var(--green); padding: 15px; width: calc(100% - 130px); font-family: inherit; }
+        .controls { display: flex; gap: 5px; }
+        .btn { background: var(--green); color: #000; border: none; padding: 15px; cursor: pointer; font-weight: bold; }
+        .msg-richard { color: var(--green); margin-bottom: 5px; }
+        .msg-boss { color: #fff; margin-bottom: 5px; border-left: 2px solid var(--green); padding-left: 5px; }
+    </style>
+</head>
+<body>
+
+<div id="left-panel">
+    <div style="font-size: 10px; margin-bottom: 10px;">ID: RICHARD_B_EVANS | SECURE_LINE: ACTIVE | NC_GATEWAY_28263</div>
+    <div id="output">
+        <div class="msg-richard">STACJA GOTOWA. KLIKNIJ 'INICJUJ', ABY OBUDZIĆ PAPUGĘ.</div>
+    </div>
+    
+    <div class="controls">
+        <input type="text" id="cmd" placeholder="Polecenie tekstowe..." onkeypress="if(event.key==='Enter') sendCmd()">
+        <button class="btn" onclick="startVoice()">🎙️ GŁOS</button>
+        <button class="btn" onclick="initRichard()">INICJUJ</button>
+    </div>
+</div>
+
+<div id="right-panel">
+    <div style="padding: 10px; font-size: 12px; background: #222; color: #fff; text-align: center;">GLOBFONE GATEWAY (CALL CENTER)</div>
+    <iframe src="https://globfone.com/call-phone/"></iframe>
+</div>
+
+<script>
+    const output = document.getElementById('output');
+    const input = document.getElementById('cmd');
+
+    // INICJALIZACJA (Wymagana przez Chrome/Firefox)
+    function initRichard() {
+        richardSpeak("Richard B. Evans operational. System initialized, Boss.");
+        printMsg("Richard: System zainicjalizowany. Czekam na wytyczne.", "msg-richard");
+    }
+
+    // GŁOS RICHARDA
+    function richardSpeak(text) {
+        if (!window.speechSynthesis) return;
+        window.speechSynthesis.cancel(); // Przerwij jeśli już mówi
+        const msg = new SpeechSynthesisUtterance(text);
+        msg.lang = 'en-US'; 
+        msg.rate = 0.85;
+        window.speechSynthesis.speak(msg);
+    }
+
+    // TWOJE KOMENDY
+    function sendCmd() {
+        const val = input.value.trim();
+        if(!val) return;
+
+        printMsg("BOSS: " + val, "msg-boss");
+
+        // PROSTA LOGIKA PAPUGI
+        let resp = "I'm on it. Analyzing legal databases.";
+        if(val.toLowerCase().includes("sprawdź")) resp = "Searching records for the target. NC database linked.";
+        if(val.toLowerCase().includes("globfone")) resp = "Opening call gateway on the right panel.";
+
+        setTimeout(() => {
+            printMsg("Richard: " + resp, "msg-richard");
+            richardSpeak(resp);
+        }, 600);
+
+        input.value = "";
+    }
+
+    function printMsg(txt, cls) {
+        const d = document.createElement('div');
+        d.className = cls;
+        d.innerText = txt;
+        output.appendChild(d);
+        output.scrollTop = output.scrollHeight;
+    }
+
+    // ROZPOZNAWANIE GŁOSU
+    function startVoice() {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRecognition) return alert("Twoja przeglądarka nie wspiera mikrofonu!");
+        
+        const recognition = new SpeechRecognition();
+        recognition.lang = 'pl-PL';
+        recognition.start();
+
+        recognition.onresult = (e) => {
+            input.value = e.results[0][0].transcript;
+            sendCmd();
+        };
+    }
+</script>
+</body>
+</html>
