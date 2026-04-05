@@ -1,88 +1,4 @@
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-    <meta charset="UTF-8">
-    <title>RICHARD B. EVANS // PURE TERMINAL</title>
-    <style>
-        :root { --green: #00ff41; --bg: #000; --low-green: rgba(0, 255, 65, 0.2); }
-        body { background: var(--bg); color: var(--green); font-family: 'Courier New', monospace; margin: 0; padding: 20px; display: flex; flex-direction: column; height: 100vh; box-sizing: border-box; }
-        
-        #header { font-size: 11px; border-bottom: 1px solid #222; padding-bottom: 10px; margin-bottom: 20px; display: flex; justify-content: space-between; letter-spacing: 1px; }
-        #console { flex-grow: 1; overflow-y: auto; border: 1px solid #111; padding: 20px; background: #020202; margin-bottom: 20px; box-shadow: inset 0 0 20px var(--low-green); }
-        
-        .input-box { display: flex; gap: 10px; background: #0a0a0a; padding: 15px; border: 1px solid var(--green); }
-        input { flex-grow: 1; background: transparent; border: none; color: var(--green); font-family: inherit; font-size: 18px; outline: none; }
-        
-        .btn { background: var(--green); color: #000; border: none; padding: 10px 25px; cursor: pointer; font-weight: bold; text-transform: uppercase; font-family: inherit; }
-        .btn:hover { background: #fff; }
-        .btn-mic { background: #ff0000; color: #fff; }
-
-        .line { margin-bottom: 12px; line-height: 1.5; }
-        .boss-line { color: #fff; }
-        .richard-line { color: var(--green); text-shadow: 0 0 5px var(--green); }
-        .sys-line { color: #444; font-size: 12px; font-style: italic; }
-        
-        /* Animacja pisania */
-        .typing::after { content: "_"; animation: blink 0.7s infinite; }
-        @keyframes blink { 50% { opacity: 0; } }
-    </style>
-</head>
-<body>
-
-<div id="header">
-    <span>SYSTEM: RICHARD_B_EVANS // 2083 KOOTER LN, NC</span>
-    <span>ENCRYPTED_SESSION: ACTIVE</span>
-</div>
-
-<div id="console">
-    <div class="line sys-line">[SYS] Czekam na inicjalizację głosu... Kliknij przycisk po prawej.</div>
-</div>
-
-<div class="input-box">
-    <input type="text" id="cmdInput" placeholder="WPISZ ROZKAZ LUB UŻYJ MIC..." autocomplete="off">
-    <button class="btn btn-mic" onclick="runMic()" id="micBtn">🎙️ MIC</button>
-    <button class="btn" onclick="sendToRichard()">WYŚLIJ</button>
-    <button class="btn" style="background: #333; color: #00ff41;" onclick="startSystem()">INICJUJ</button>
-</div>
-
-<script>
-    const consoleDiv = document.getElementById('console');
-    const inputField = document.getElementById('cmdInput');
-    const micBtn = document.getElementById('micBtn');
-
-    // 1. RICHARD MÓWI I PISZE
-    function richardResponse(text) {
-        // Tekst na ekranie
-        const line = document.createElement('div');
-        line.className = "line richard-line typing";
-        line.innerText = "Richard: ";
-        consoleDiv.appendChild(line);
-        
-        let i = 0;
-        function typeWriter() {
-            if (i < text.length) {
-                line.innerText += text.charAt(i);
-                i++;
-                setTimeout(typeWriter, 30);
-                consoleDiv.scrollTop = consoleDiv.scrollHeight;
-            } else {
-                line.classList.remove('typing');
-            }
-        }
-        typeWriter();
-
-        // Głos (TTS)
-        if (window.speechSynthesis) {
-            window.speechSynthesis.cancel();
-            const msg = new SpeechSynthesisUtterance(text);
-            msg.lang = 'en-US'; // Richard mówi z akcentem USA
-            msg.rate = 0.9;
-            window.speechSynthesis.speak(msg);
-        }
-    }
-
-    // 2. TWOJA KOMENDA (Tekst)
-    function sendToRichard() {
+function sendToRichard() {
         const cmd = inputField.value.trim();
         if (!cmd) return;
 
@@ -92,44 +8,32 @@
         consoleDiv.appendChild(line);
         consoleDiv.scrollTop = consoleDiv.scrollHeight;
 
-        // Reakcje Papugi
+        // --- SUPER PAPUGA LOGIC ---
         setTimeout(() => {
-            if (cmd.toLowerCase().includes("sprawdź")) {
-                richardResponse("Accessing legal mainframe. Cross-referencing DOX files and local warrants for you, Boss.");
-            } else if (cmd.toLowerCase().includes("kto to")) {
-                richardResponse("Checking target identity. Analyzing database. Please wait for the scan result.");
-            } else {
-                richardResponse("Message received. I'm processing the data. Stay low.");
+            let resp = "";
+            let text = cmd.toLowerCase();
+
+            if (text.includes("pranie") || text.includes("mamony")) {
+                resp = "REPORT: Art. 299 KK. Money Laundering. Pranie brudnych pieniędzy. Paragraf 1: od 6 miesięcy do 8 lat. Paragraf 5 i 6 (grupa/znaczna wartość): od 1 do 10 lat. Przepadek mienia w standardzie. My advice: Watch your bank triggers, Boss.";
+            } 
+            else if (text.includes("narkotyk") || text.includes("towar")) {
+                resp = "REPORT: Art. 62 Ustawy o przeciwdziałaniu narkomanii. Posiadanie: do 3 lat. Znaczna ilość: od 1 do 10 lat. Handlowanie (Art. 59): od 2 do 12 lat. Richard's note: Don't get caught with the scales (waga).";
             }
+            else if (text.includes("pobicie") || text.includes("rozjebanie")) {
+                resp = "REPORT: Art. 158 KK. Udział w bójce lub pobiciu. Paragraf 1: do 3 lat. Jeśli skutek jest ciężki (Paragraf 2): od 6 miesięcy do 8 lat. Jeśli śmierć (Paragraf 3): od 1 do 10 lat. Stay professional, use proxies.";
+            }
+            else if (text.includes("doxy") || text.includes("hacking")) {
+                resp = "REPORT: Art. 267 KK. Bezprawne uzyskanie informacji. Grzywna, ograniczenie wolności lub do 2 lat. Art. 268a (niszczenie danych): do 3 lat. Use TOR, Richard is watching the gateway.";
+            }
+            else if (text.includes("status")) {
+                resp = "Status: Operational. All legal databases from 2026 synced. Encryption 256-bit. Richard B. Evans is ready for the next move.";
+            }
+            else {
+                resp = "Analyzing request... I need more specific keywords (KK Article, Criminal Act). Speak clearly, Boss.";
+            }
+
+            richardResponse(resp);
         }, 600);
 
         inputField.value = "";
     }
-
-    // 3. TWOJA KOMENDA (Głos)
-    function runMic() {
-        const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
-        if (!SpeechRec) return alert("Brak wsparcia MIC w tej przeglądarce.");
-        
-        const rec = new SpeechRec();
-        rec.lang = 'pl-PL'; // Ty po polsku
-        rec.start();
-        micBtn.style.background = "#00ff41";
-
-        rec.onresult = (e) => {
-            inputField.value = e.results[0][0].transcript;
-            sendToRichard();
-        };
-
-        rec.onend = () => { micBtn.style.background = "#ff0000"; };
-    }
-
-    function startSystem() {
-        richardResponse("Richard B. Evans online. Operational terminal secured. Awaiting your orders, Boss.");
-    }
-
-    inputField.addEventListener("keypress", (e) => { if(e.key === "Enter") sendToRichard(); });
-</script>
-
-</body>
-</html>
